@@ -38,6 +38,11 @@ class AccountService {
 
   static final ValueNotifier<int> sessionEpoch = ValueNotifier<int>(0);
 
+  static const String defaultBaseUrl = String.fromEnvironment(
+    'PRFITNESS_API_BASE_URL',
+    defaultValue: 'https://prfitness.itltech.in',
+  );
+
   static const String _baseUrlKey = 'sync.base_url';
   static const String _accessKey = 'sync.access_token';
   static const String _refreshKey = 'sync.refresh_token';
@@ -345,6 +350,25 @@ class AccountService {
         uri.host.isEmpty ||
         (uri.scheme != 'https' && uri.scheme != 'http')) {
       throw const ApiException('Enter a valid server URL.');
+    }
+
+    final String host = uri.host.toLowerCase();
+
+    final bool localDevelopmentHost =
+        host == 'localhost' ||
+        host == '127.0.0.1' ||
+        host == '::1' ||
+        host == '10.0.2.2';
+
+    if (uri.scheme == 'http' && !localDevelopmentHost) {
+      throw const ApiException('Remote PrFitness servers must use HTTPS.');
+    }
+
+    if (uri.userInfo.isNotEmpty ||
+        uri.hasQuery ||
+        uri.hasFragment ||
+        (uri.path.isNotEmpty && uri.path != '/')) {
+      throw const ApiException('Enter only the PrFitness server base URL.');
     }
 
     return value;

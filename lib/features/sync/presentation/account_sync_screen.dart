@@ -59,7 +59,8 @@ class _AccountSyncScreenState extends State<AccountSyncScreen> {
     if (!mounted) return;
     setState(() {
       _account = account;
-      _server.text = account?.baseUrl ?? server ?? '';
+      _server.text =
+          account?.baseUrl ?? server ?? AccountService.defaultBaseUrl;
       _email.text = account?.email ?? '';
       _lastSync = last;
       _loading = false;
@@ -390,7 +391,7 @@ class _AuthPanel extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           const Text(
-            'Use HTTPS in production. Android emulator development can use http://10.0.2.2:8080.',
+            'Production server: https://prfitness.itltech.in. Android emulator development can use http://10.0.2.2:8080.',
           ),
           const SizedBox(height: 16),
           TextField(

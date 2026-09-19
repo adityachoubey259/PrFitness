@@ -53,7 +53,7 @@ class _SecureLoginScreenState extends State<SecureLoginScreen> {
       return;
     }
 
-    _server.text = current?.baseUrl ?? base ?? 'http://127.0.0.1:8080';
+    _server.text = current?.baseUrl ?? base ?? AccountService.defaultBaseUrl;
 
     _loginId.text = current?.loginId ?? '';
 
