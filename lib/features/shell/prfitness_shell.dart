@@ -7,7 +7,8 @@ import '../../core/widgets/premium_backdrop.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../health/health_hub_screen.dart';
 import '../more/control_screen.dart';
-import 'module_screen.dart';
+import '../study/study_screen.dart';
+import '../goals/goals_screen.dart';
 
 enum PrSection { dashboard, health, study, goals, control }
 
@@ -56,29 +57,13 @@ class _PrFitnessShellState extends State<PrFitnessShell> {
         database: widget.database,
         profile: widget.profile,
       ),
-      PrSection.study => const ModuleScreen(
-        title: 'Study Intelligence',
-        subtitle: 'Focus sessions, timestamps and performance intelligence.',
-        icon: Icons.school_rounded,
-        features: <String>[
-          'Live focus timer',
-          'Timestamped sessions',
-          'Subject analytics',
-          'Daily study target',
-          'Consistency intelligence',
-        ],
+      PrSection.study => StudyScreen(
+        database: widget.database,
+        profile: widget.profile,
       ),
-      PrSection.goals => const ModuleScreen(
-        title: 'Goals & Routines',
-        subtitle: 'Build measurable execution across your day.',
-        icon: Icons.task_alt_rounded,
-        features: <String>[
-          'Daily checklist',
-          'Custom routines',
-          'Goal streaks',
-          'Local reminders',
-          'Completion analytics',
-        ],
+      PrSection.goals => GoalsScreen(
+        database: widget.database,
+        profile: widget.profile,
       ),
       PrSection.control => ControlScreen(
         database: widget.database,
