@@ -1,0 +1,14 @@
+flutter_native_splash:
+  color: "#FFF8FB"
+  color_dark: "#09090D"
+  image: assets/branding/prfitness_icon.png
+  image_dark: assets/branding/prfitness_icon.png
+  android: true
+  ios: false
+  web: false
+  android_min_sdk: 24
+  android_12:
+    color: "#FFF8FB"
+    color_dark: "#09090D"
+    image: assets/branding/prfitness_icon.png
+    image_dark: assets/branding/prfitness_icon.png
