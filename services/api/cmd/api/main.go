@@ -29,6 +29,11 @@ func main() {
 		port = "8080"
 	}
 
+	bindAddress := os.Getenv("BIND_ADDRESS")
+	if bindAddress == "" {
+		bindAddress = "127.0.0.1"
+	}
+
 	root := context.Background()
 	var pool *pgxpool.Pool
 	databaseStatus := "not-configured"
@@ -72,7 +77,7 @@ func main() {
 	mux.Handle("POST /v1/sync", api.RequireAuth(http.HandlerFunc(api.Sync)))
 
 	server := &http.Server{
-		Addr:              ":" + port,
+		Addr:              bindAddress + ":" + port,
 		Handler:           securityHeaders(mux),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       20 * time.Second,

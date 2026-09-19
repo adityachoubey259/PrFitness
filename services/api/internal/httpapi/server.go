@@ -738,10 +738,7 @@ func (s *Server) requireReady(w http.ResponseWriter) bool {
 }
 
 func (s *Server) allowAuth(r *http.Request) bool {
-	host := r.RemoteAddr
-	if parsedHost, _, err := net.SplitHostPort(r.RemoteAddr); err == nil {
-		host = parsedHost
-	}
+	host := clientIP(r)
 
 	now := time.Now()
 	s.limitMu.Lock()
@@ -858,4 +855,24 @@ func writeJSON(w http.ResponseWriter, status int, value any) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(value)
+}
+
+func clientIP(r *http.Request) string {
+	host := r.RemoteAddr
+
+	if parsedHost, _, err := net.SplitHostPort(r.RemoteAddr); err == nil {
+		host = parsedHost
+	}
+
+	// X-Real-IP is trusted only when the immediate peer is the
+	// local reverse proxy. Direct clients cannot spoof this value.
+	if host == "127.0.0.1" || host == "::1" {
+		if realIP := r.Header.Get("X-Real-IP"); realIP != "" {
+			if parsed := net.ParseIP(realIP); parsed != nil {
+				return parsed.String()
+			}
+		}
+	}
+
+	return host
 }
